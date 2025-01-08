@@ -1,21 +1,21 @@
 ﻿# GASDocumentation
-My understanding of Unreal Engine 5's GameplayAbilitySystem plugin (GAS) with a simple multiplayer sample project. This is not official documentation and neither this project nor myself are affiliated with Epic Games. I make no guarantee for the accuracy of this information.
+언리얼 엔진 5의 GameplayAbilitySystem 플러그인(GAS)에 대한 제 이해를 간단한 멀티플레이어 샘플 프로젝트와 함께 설명합니다. 이것은 공식 문서가 아니며 이 프로젝트나 저는 Epic Games와 관련이 없습니다. 이 정보의 정확성에 대해 어떠한 보증도 하지 않습니다.
 
-The goal of this documentation is to explain the major concepts and classes in GAS and provide some additional commentary based on my experience with it. There is a lot of 'tribal knowledge' of GAS among users in the community and I aim to share all of mine here.
+이 문서의 목적은 GAS의 주요 개념과 클래스들을 설명하고 제가 경험한 것을 바탕으로 추가적인 설명을 제공하는 것입니다. 커뮤니티 사용자들 사이에는 GAS에 대한 많은 '부족 지식'이 있으며, 저는 제가 아는 모든 것을 여기에서 공유하고자 합니다.
 
-The Sample Project and documentation are current with **Unreal Engine 5.3** (UE5). There are branches of this documentation for older versions of Unreal Engine, but they are no longer supported and are liable to have bugs or out of date information. Please use the branch that matches your engine version.
+샘플 프로젝트와 문서는 **언리얼 엔진 5.3**(UE5)과 함께 최신 상태를 유지하고 있습니다. 이전 버전의 언리얼 엔진을 위한 문서 브랜치들이 있지만, 더 이상 지원되지 않으며 버그나 오래된 정보가 있을 수 있습니다. 엔진 버전과 일치하는 브랜치를 사용해주세요.
 
-[GASShooter](https://github.com/tranek/GASShooter) is a sister Sample Project demonstrating advanced techniques with GAS for a multiplayer FPS/TPS.
+[GASShooter](https://github.com/tranek/GASShooter)는 멀티플레이어 FPS/TPS를 위한 GAS의 고급 기술을 보여주는 자매 샘플 프로젝트입니다.
 
-The best documentation will always be the plugin source code.
+가장 좋은 문서는 항상 플러그인 소스 코드입니다.
 
 <a name="table-of-contents"></a>
 ## Table of Contents
 
-> 1. [Intro to the GameplayAbilitySystem Plugin](#intro)
-> 1. [Sample Project](#sp)
-> 1. [Setting Up a Project Using GAS](#setup)
-> 1. [Concepts](#concepts)  
+> 1. [GameplayAbilitySystem 플러그인 소개](#intro)
+> 1. [샘플 프로젝트](#sp)
+> 1. [GAS를 사용하는 프로젝트 설정](#setup)
+> 1. [GAS 개념들](#concepts)  
 >    4.1 [Ability System Component](#concepts-asc)  
 >    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1.1 [Replication Mode](#concepts-asc-rm)  
 >    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1.2 [Setup and Initialization](#concepts-asc-setup)  
