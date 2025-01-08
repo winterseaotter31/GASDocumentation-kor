@@ -187,64 +187,64 @@ GameplayAbilitySystem 플러그인은 에픽 게임즈가 개발했으며 언리
 * 시각 또는 사운드 효과 생성 ([GameplayCues](#concepts-gc))
 * 위에서 언급된 모든 것들의 리플리케이션
 
-In multiplayer games, GAS provides support for [client-side prediction](#concepts-p) of:
-* Ability activation
-* Playing animation montages
-* Changes to `Attributes`
-* Applying `GameplayTags`
-* Spawning `GameplayCues`
-* Movement via `RootMotionSource` functions connected to the `CharacterMovementComponent`.
+멀티플레이어 게임에서 GAS는 다음 항목들의 [클라이언트측 예측](#concepts-p)을 지원합니다.
+* 어빌리티 활성화
+* 애니메이션 몽타주 재생
+* `Attributes` 변경
+* `GameplayTags` 적용
+* `GameplayCues` 생성
+* `CharacterMovementComponent`와 연결된 `RootMotionSource` 함수를 통한 이동
+  
+**GAS는 반드시 C++에서 설정해야 합니다**, 하지만 `GameplayAbilities`와 `GameplayEffects`는 디자이너가 블루프린트에서 생성할 수 있습니다.
 
-**GAS must be set up in C++**, but `GameplayAbilities` and `GameplayEffects` can be created in Blueprint by the designers.
+GAS의 현재 이슈들:
+* `GameplayEffect` 지연 시간 조정(어빌리티 쿨다운을 예측할 수 없어서 지연 시간이 높은 플레이어가 낮은 플레이어에 비해 낮은 쿨다운 어빌리티의 발사율이 낮아짐)
+* `GameplayEffects` 제거를 예측할 수 없음. 하지만 역효과를 가진 `GameplayEffects`를 예측적으로 추가하여 효과적으로 제거할 수는 있습니다. 이것이 항상 적절하거나 실현 가능한 것은 아니며 여전히 문제로 남아있습니다.
+* 보일러플레이트 템플릿, 멀티플레이어 예제, 문서의 부족. 이 문서가 그 부분을 도와줄 수 있기를 바랍니다!
 
-Current issues with GAS:
-* `GameplayEffect` latency reconciliation (can't predict ability cooldowns resulting in players with higher latencies having lower rate of fire for low cooldown abilities compared to players with lower latencies).
-* Cannot predict the removal of `GameplayEffects`. We can however predict adding `GameplayEffects` with the inverse effects, effectively removing them. This is not always appropriate or feasible and still remains an issue.
-* Lack of boilerplate templates, multiplayer examples, and documentation. Hopefully this helps with that!
-
-**[⬆ Back to Top](#table-of-contents)**
+**[⬆ 상단으로 돌아가기](#table-of-contents)**
 
 <a name="sp"></a>
-## 2. Sample Project
-A multiplayer third person shooter sample project is included with this documentation aimed at people new to the GameplayAbilitySystem Plugin but not new to Unreal Engine. Users are expected to know C++, Blueprints, UMG, Replication, and other intermediate topics in UE. This project provides an example of how to set up a basic third person shooter multiplayer-ready project with the `AbilitySystemComponent` (`ASC`) on the `PlayerState` class for player/AI controlled heroes and the `ASC` on the `Character` class for AI controlled minions.
+## 2. 샘플 프로젝트
+이 문서와 함께 제공되는 멀티플레이어 3인칭 슈터 샘플 프로젝트는 GameplayAbilitySystem 플러그인을 처음 접하지만 언리얼 엔진에는 익숙한 사람들을 대상으로 합니다. 사용자는 C++, 블루프린트, UMG, 리플리케이션 및 UE의 다른 중급 주제들을 알고 있어야 합니다. 이 프로젝트는 플레이어/AI가 제어하는 영웅을 위해 `PlayerState` 클래스에 `AbilitySystemComponent`(`ASC`)를 두고, AI가 제어하는 미니언을 위해 `Character` 클래스에 `ASC`를 둔 기본적인 3인칭 슈터 멀티플레이어 준비 프로젝트를 설정하는 방법의 예를 제공합니다.
 
-The goal is to keep this project simple while showing the GAS basics and demonstrating some commonly requested abilities with well-commented code. Because of its beginner focus, the project does not show advanced topics like [predicting projectiles](#concepts-p-spawn).
+이 프로젝트의 목표는 GAS 기본사항을 보여주고 잘 주석이 달린 코드로 일반적으로 요청되는 몇 가지 능력을 시연하면서도 단순함을 유지하는 것입니다. 초보자에 초점을 맞추고 있기 때문에, 이 프로젝트는 [발사체 예측](#concepts-p-spawn)과 같은 고급 주제는 다루지 않습니다.
 
-Concepts demonstrated:
-* `ASC` on `PlayerState` vs `Character`
-* Replicated `Attributes`
-* Replicated animation montages
+시연되는 개념들:
+* `PlayerState` vs `Character`에서의 `ASC`
+* 리플리케이션된 `Attributes`
+* 리플리케이션된 애니메이션 몽타주
 * `GameplayTags`
-* Applying and removing `GameplayEffects` inside of and externally from `GameplayAbilities`
-* Applying damage mitigated by armor to change health of a character
+* `GameplayAbilities` 내부와 외부에서 `GameplayEffects` 적용 및 제거
+* 방어구에 의해 감소된 데미지를 캐릭터의 체력에 적용
 * `GameplayEffectExecutionCalculations`
-* Stun effect
-* Death and respawn
-* Spawning actors (projectiles) from an ability on the server
-* Predictively changing the local player's speed with aim down sights and sprinting
-* Constantly draining stamina to sprint
-* Using mana to cast abilities
-* Passive abilities
-* Stacking `GameplayEffects`
-* Targeting actors
-* `GameplayAbilities` created in Blueprint
-* `GameplayAbilities` created in C++
-* Instanced per `Actor` `GameplayAbilities`
-* Non-Instanced `GameplayAbilities` (Jump)
-* Static `GameplayCues` (FireGun projectile impact particle effect)
-* Actor `GameplayCues` (Sprint and Stun particle effects)
+* 스턴 효과
+* 죽음과 부활
+* 서버에서 어빌리티로부터 액터(발사체) 생성
+* 조준 사격과 달리기로 로컬 플레이어의 속도를 예측적으로 변경
+* 달리기를 위해 지속적으로 스태미나 소모
+* 어빌리티를 사용하기 위한 마나 사용
+* 패시브 어빌리티
+* 스택형 `GameplayEffects`
+* 액터 타게팅
+* 블루프린트에서 생성된 `GameplayAbilities`
+* C++에서 생성된 `GameplayAbilities`
+* 액터별로 인스턴스화된 `GameplayAbilities`
+* 인스턴스화되지 않은 `GameplayAbilities` (점프)
+* 정적 `GameplayCues` (총 발사 발사체 충격 파티클 효과)
+* 액터 `GameplayCues` (달리기와 스턴 파티클 효과)
 
-The hero class has the following abilities:
+영웅 클래스는 다음과 같은 능력들을 가집니다.
 
-| Ability                    | Input Bind          | Predicted  | C++ / Blueprint | Description                                                                                                                                                                  |
+| 어빌리티                    | 입력 바인딩         | 예측  | C++ / 블루프린트 | 설명                                                                                                                                                                  |
 | -------------------------- | ------------------- | ---------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Jump                       | Space Bar           | Yes        | C++             | Makes the hero jump.                                                                                                                                                         |
-| Gun                        | Left Mouse Button   | No         | C++             | Fires a projectile from the hero's gun. The animation is predicted but the projectile is not.                                                                                |
-| Aim Down Sights            | Right Mouse Button  | Yes        | Blueprint       | While the button is held, the hero will walk slower and the camera will zoom in to allow more precise shots with the gun.                                                    |
-| Sprint                     | Left Shift          | Yes        | Blueprint       | While the button is held, the hero will run faster draining stamina.                                                                                                         |
-| Forward Dash               | Q                   | Yes        | Blueprint       | The hero dashes forward at the cost of stamina.                                                                                                                              |
-| Passive Armor Stacks       | Passive             | No         | Blueprint       | Every 4 seconds the hero gains a stack of armor up to a maximum of 4 stacks. Receiving damage removes one stack of armor.                                                    |
-| Meteor                     | R                   | No         | Blueprint       | Player targets a location to drop a meteor on the enemies causing damage and stunning them. The targeting is predicted while spawning the meteor is not.                     |
+| 점프                       | 스페이스바           | 예        | C++             | 영웅이 점프합니다.                                                                                                                                                         |
+| 발사                        | 좌클릭   | 아니오         | C++             | 영웅의 총에서 발사체를 발사합니다. 애니메이션은 예측되지만 발사체는 아닙니다.                                                                                |
+| 조준 사격 (ADS)            | 우클릭  | 예        | 블루프린트       | 버튼을 누르고 있는 동안, 영웅은 더 천천히 걷고 카메라가 확대되어 총으로 더 정확한 사격이 가능합니다.                                                    |
+| 달리기                     | 왼쪽 쉬프트키          | 예        | 블루프린트       | 버튼을 누르고 있는 동안, 영웅은 스태미나를 소모하며 더 빨리 달립니다.                                                                                                         |
+| 전방 대시              | Q                   | 예        | 블루프린트       | 영웅이 스태미나를 소모하며 전방으로 대시합니다.                                                                                                                              |
+| 패시브 방어구 스택       | 패시브             | 아니오         | 블루프린트       | 4초마다 영웅이 최대 4개까지 방어구 스택을 얻습니다. 데미지를 받으면 방어구 스택 하나가 제거됩니다.                                                    |
+| 메테오                     | R                   | 아니오         | 블루프린트       | 플레이어가 적들에게 데미지를 주고 스턴시키는 메테오를 떨어뜨릴 위치를 타게팅합니다. 타게팅은 예측되지만 메테오 생성은 예측되지 않습니다.                     |
 
 It does not matter if `GameplayAbilities` are created in C++ or Blueprint. A mixture of the two were used here for example of how to do them in each language.
 
