@@ -173,19 +173,19 @@
 >    * [4.24](#changelog-4.24)
          
 <a name="intro"></a>
-## 1. Intro to the GameplayAbilitySystem Plugin
-From the [Official Documentation](https://docs.unrealengine.com/en-US/Gameplay/GameplayAbilitySystem/index.html):
->The Gameplay Ability System is a highly-flexible framework for building abilities and attributes of the type you might find in an RPG or MOBA title. You can build actions or passive abilities for the characters in your games to use, status effects that can build up or wear down various attributes as a result of these actions, implement "cooldown" timers or resource costs to regulate the usage of these actions, change the level of the ability and its effects at each level, activate particle or sound effects, and more. Put simply, this system can help you to design, implement, and efficiently network in-game abilities as simple as jumping or as complex as your favorite character's ability set in any modern RPG or MOBA title.
+## 1. GameplayAbilitySystem 플러그인 소개
+[공식 문서](https://docs.unrealengine.com/en-US/Gameplay/GameplayAbilitySystem/index.html)에서 발췌
+>게임플레이 어빌리티 시스템은 RPG나 MOBA 게임에서 볼 수 있는 어빌리티와 속성을 구축하기 위한 높은 유연성을 가진 프레임워크입니다. 게임 캐릭터가 사용할 수 있는 액션이나 패시브 어빌리티를 만들고, 이러한 액션의 결과로 다양한 속성을 증가시키거나 감소시키는 상태 효과를 구현하고, 액션 사용을 제어하기 위한 "쿨다운" 타이머나 리소스 비용을 설정하고, 어빌리티의 레벨과 각 레벨에서의 효과를 변경하고, 파티클이나 사운드 효과를 활성화하는 등의 기능을 구현할 수 있습니다. 간단히 말해서, 이 시스템은 점프와 같은 간단한 기능부터 현대 RPG나 MOBA 게임의 캐릭터가 가진 복잡한 어빌리티 세트까지 게임 내 어빌리티를 설계, 구현, 효율적으로 네트워킹하는 데 도움을 줄 수 있습니다.
 
-The GameplayAbilitySystem plugin is developed by Epic Games and comes with Unreal Engine. It has been battle tested in AAA commercial games such as Paragon and Fortnite among others.
+GameplayAbilitySystem 플러그인은 에픽 게임즈가 개발했으며 언리얼 엔진에 포함되어 있습니다. 이는 파라곤과 포트나이트를 포함한 여러 AAA 상용 게임에서 검증되었습니다.
 
-The plugin provides an out-of-the-box solution in single and multiplayer games for:
-* Implementing level-based character abilities or skills with optional costs and cooldowns ([GameplayAbilities](#concepts-ga))
-* Manipulating numerical `Attributes` belonging to actors ([Attributes](#concepts-a))
-* Applying status effects to actors ([GameplayEffects](#concepts-ge))
-* Applying `GameplayTags` to actors ([GameplayTags](#concepts-gt))
-* Spawning visual or sound effects ([GameplayCues](#concepts-gc))
-* Replication of everything mentioned above
+이 플러그인은 싱글 및 멀티플레이어 게임에서 다음과 같은 기능을 즉시 사용할 수 있는 솔루션을 제공합니다.
+* 선택적 비용과 쿨다운이 있는 레벨 기반 캐릭터 어빌리티 또는 스킬 구현 ([GameplayAbilities](#concepts-ga))
+* 액터에 속한 수치형 `어트리뷰트(Attribute)` 조작 ([Attributes](#concepts-a))
+* 액터에 상태 효과 적용 ([GameplayEffects](#concepts-ge))
+* 액터에 `GameplayTags` 적용([GameplayTags](#concepts-gt))
+* 시각 또는 사운드 효과 생성 ([GameplayCues](#concepts-gc))
+* 위에서 언급된 모든 것들의 리플리케이션
 
 In multiplayer games, GAS provides support for [client-side prediction](#concepts-p) of:
 * Ability activation
