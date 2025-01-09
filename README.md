@@ -304,25 +304,24 @@ GAS를 활성화하기 위해 해야 할 일은 이것이 전부입니다. 여�
 `ASC`는 부여된 `Gameplay Abilities`를 `FGameplayAbilitySpecContainer ActivatableAbilities`에 보관합니다. `ActivatableAbilities.Items`를 순회할 계획이 있다면, 반드시 루프 위에 `ABILITYLIST_SCOPE_LOCK();`을 추가하여 리스트가 변경되지 않도록(어빌리티가 제거되는 것으로 인해) 잠가야 합니다. 스코프 내의 모든 `ABILITYLIST_SCOPE_LOCK();`는 `AbilityScopeLockCount`를 증가시키고 스코프를 벗어날 때 감소시킵니다. `ABILITYLIST_SCOPE_LOCK();`의 스코프 내에서 어빌리티를 제거하려고 하지 마세요(clear ability 함수들은 리스트가 잠겨있는 경우 어빌리티 제거를 방지하기 위해 내부적으로 `AbilityScopeLockCount`를 확인합니다).
 
 <a name="concepts-asc-rm"></a>
-### 4.1.1 Replication Mode
-The `ASC` defines three different replication modes for replicating `GameplayEffects`, `GameplayTags`, and `GameplayCues` - `Full`, `Mixed`, and `Minimal`. `Attributes` are replicated by their `AttributeSet`.
+### 4.1.1 리플리케이션 모드
+`ASC`는 `GameplayEffects`, `GameplayTags`, 그리고 `GameplayCues`를 리플리케이션하기 위한 세 가지 다른 리플리케이션 모드를 정의합니다 - `Full`, `Mixed`, 그리고 `Minimal`. `Attributes`는 자신의 `AttributeSet`에 의해 복제됩니다.
 
-| Replication Mode   | When to Use                             | Description                                                                                                                    |
+| 리플리케이션 모드 | 사용 시점 | 설명 |
 | ------------------ | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `Full`             | Single Player                           | Every `GameplayEffect` is replicated to every client.                                                                          |
-| `Mixed`            | Multiplayer, player controlled `Actors` | `GameplayEffects` are only replicated to the owning client. Only `GameplayTags` and `GameplayCues` are replicated to everyone. |
-| `Minimal`          | Multiplayer, AI controlled `Actors`     | `GameplayEffects` are never replicated to anyone. Only `GameplayTags` and `GameplayCues` are replicated to everyone.           |
+| `Full` | 싱글 플레이어 | 모든 `GameplayEffect`가 모든 클라이언트에 복제됩니다. |
+| `Mixed` | 멀티플레이어, 플레이어가 제어하는 `Actor`들 | `GameplayEffects`는 소유 클라이언트에게만 복제됩니다. `GameplayTags`와 `GameplayCues`만이 모든 사람에게 복제됩니다. |
+| `Minimal` | 멀티플레이어, AI가 제어하는 `Actor`들 | `GameplayEffects`는 누구에게도 복제되지 않습니다. `GameplayTags`와 `GameplayCues`만이 모든 사람에게 복제됩니다. |
 
-**Note:** `Mixed` replication mode expects the `OwnerActor's` `Owner` to be the `Controller`. `PlayerState's` `Owner` is the `Controller` by default but `Character's` is not. If using `Mixed` replication mode with the `OwnerActor` not the `PlayerState`, then you need to call `SetOwner()` on the `OwnerActor` with a valid `Controller`.
+**참고:** `Mixed` 리플리케이션 모드는 `OwnerActor`의 `Owner`가 `Controller`일 것으로 예상합니다. `PlayerState`의 `Owner`는 기본적으로 `Controller`이지만 `Character`의 경우는 그렇지 않습니다. `OwnerActor`가 `PlayerState`가 아닌 상태에서 `Mixed` 리플리케이션 모드를 사용한다면, 유효한 `Controller`와 함께 `OwnerActor`에서 `SetOwner()`를 호출해야 합니다.
 
-Starting with 4.24, `PossessedBy()` now sets the owner of the `Pawn` to the new `Controller`.
+4.24 버전부터는 `PossessedBy()`가 이제 `Pawn`의 소유자를 새로운 `Controller`로 설정합니다.
 
 **[⬆ 상단으로 돌아가기](#table-of-contents)**
 
 <a name="concepts-asc-setup"></a>
-### 4.1.2 Setup and Initialization
-`ASCs` are typically constructed in the `OwnerActor's` constructor and explicitly marked replicated. **This must be done in C++**.
-
+### 4.1.2 설정과 초기화
+`ASC`는 일반적으로 `OwnerActor`의 생성자에서 생성되고 명시적으로 복제되도록 표시됩니다. **이는 반드시 C++에서 수행되어야 합니다**.
 ```c++
 AGDPlayerState::AGDPlayerState()
 {
